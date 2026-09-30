@@ -1,0 +1,17 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          sh -n agent-tab-state.sh
+          bash -n install.sh
+          python3 -m py_compile agent_tabs.py configure.py
+      - name: Tests
+        run: |
+          python3 tests/test_agent_tabs.py
+          python3 tests/test_configure.py
+          python3 tests/test_install.py
